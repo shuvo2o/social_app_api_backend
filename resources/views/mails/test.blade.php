@@ -8,7 +8,7 @@
     <title>{{ $subject }}</title>
 </head>
 <body>
-    <table>
+    <table> name
         <tr>
             <td>{{ $subject }}</td>
         </tr>
@@ -18,6 +18,7 @@
 
         <tr>
             <td>{{ $data['body'] }}</td>
+            
         </tr>
     </table>
 </body>
