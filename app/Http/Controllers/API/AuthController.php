@@ -130,4 +130,43 @@ class AuthController extends Controller
         ], 200);
     }
 
+
+    public function changePassword(Request $request){
+        $request->validate([
+          'current_password' => 'required|current_password',
+          'password' => 'required|confirmed',
+        ]);
+
+        $user = $request->user();
+        $user->password = bcrypt($request->password) ;
+        $user->save();
+
+        return response()->json([
+          'message' =>  'password updated successfully'
+        ], 422);
+      }
+    public function updateProfile(Request $request){
+        $request->validate([
+          'first_name' => 'required',
+          'last_name' => 'required',
+        ]);
+
+        $user = $request->user();
+
+        if($user->email !== $request->email){
+            $request->validate([
+                
+                    'email' =>'required|unique:users,email',
+                
+            ]);
+            $user->first_name = $request->first_name ?? $user->first_name;
+            $user->last_name = $request->last_name ?? $user->last_name;
+        }
+        $user->save();
+        return response()->json([
+          'message' =>  'Profile updated successfully',
+          'data'=> $user
+        ], 422);
+      }
+
 }

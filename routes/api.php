@@ -24,10 +24,12 @@ Route::group(['prefix' => 'auth'], function() {
         Route::controller(AuthController::class)->group(function() {
             Route::get('logout', 'logout');
             Route::get('get-profile', 'getProfile');
+            Route::post('change-password', 'changePassword');
+            Route::post('update-profile', 'updateProfile');
     
         });
     });
 });
 
-// Routes that require authentication
+
 
