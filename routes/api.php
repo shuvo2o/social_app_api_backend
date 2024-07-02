@@ -4,6 +4,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\PostController;
 
 // Middleware for getting authenticated user
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -28,6 +29,12 @@ Route::group(['prefix' => 'auth'], function() {
             Route::post('update-profile', 'updateProfile');
     
         });
+    });
+});
+
+Route::group(['middleware'=> 'auth:sanctum'], function(){
+    Route::group(['prefix'=>'user'], function(){
+        Route::apiResource('posts', PostController::class);
     });
 });
 
