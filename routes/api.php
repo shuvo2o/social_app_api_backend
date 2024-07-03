@@ -35,6 +35,7 @@ Route::group(['prefix' => 'auth'], function() {
 Route::group(['middleware'=> 'auth:sanctum'], function(){
     Route::group(['prefix'=>'user'], function(){
         Route::apiResource('posts', PostController::class);
+        Route::get('posts-public', [PostController::class ,'publicPosts']);
     });
 });
 

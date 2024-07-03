@@ -21,6 +21,17 @@ class PostController extends Controller
         return response()->json($posts);
     }
 
+
+    public function publicPosts()
+    {
+
+        $posts = Post::where('visibility', 'public')
+        ->orderBy('created_at', 'desc')
+        ->cursorPaginate();
+
+        return response()->json($posts);
+    }
+
     /**
      * Store a newly created resource in storage.
      */
@@ -64,7 +75,20 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        $request->validate([
+            'visibility' => 'in:public,private',
+        ]);
+
+        if($request->text != $post->text && ($request->text !== null || $request->text != '')   ){
+            $request->validate([
+                'text' => 'required|min:5',
+            ]);
+        }
+
+        $post->update($request->only(['text', 'visibility']));
+        return response()->json($post);
+
+        return response()->json($post);
     }
 
     /**
@@ -72,6 +96,9 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $post->delete();
+        return response()->json([
+            'message' => "post delete succesfully",
+        ]);
     }
 }
