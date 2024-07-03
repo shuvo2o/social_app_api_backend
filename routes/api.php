@@ -4,6 +4,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\AuthController;
+use App\Http\Controllers\API\LikeCommentController;
 use App\Http\Controllers\API\PostController;
 
 // Middleware for getting authenticated user
@@ -36,6 +37,10 @@ Route::group(['middleware'=> 'auth:sanctum'], function(){
     Route::group(['prefix'=>'user'], function(){
         Route::apiResource('posts', PostController::class);
         Route::get('posts-public', [PostController::class ,'publicPosts']);
+        Route::controller(LikeCommentController::class)->group(function(){
+            Route::post('comments', 'PostComment');
+            Route::get('like/{postID}', 'LikeUnLike');
+        });
     });
 });
 
