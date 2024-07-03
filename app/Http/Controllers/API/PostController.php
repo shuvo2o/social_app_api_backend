@@ -14,7 +14,7 @@ class PostController extends Controller
     public function index(Request $request)
     {
         $user = $request->user();
-        $posts = Post::where('user_id', $user->id)
+        $posts = Post::with(['user:id,first_name,last_name','comments.user:id,first_name,last_name', 'likes.user:id,first_name,last_name'])->withCount('likes', 'comments')->where('user_id', $user->id)
         ->orderBy('created_at', 'desc')
         ->cursorPaginate();
 
@@ -25,7 +25,7 @@ class PostController extends Controller
     public function publicPosts()
     {
 
-        $posts = Post::where('visibility', 'public')
+        $posts = Post::with(['user:id,first_name,last_name','comments.user:id,first_name,last_name', 'likes.user:id,first_name,last_name'])->withCount('likes', 'comments')->where('visibility', 'public')
         ->orderBy('created_at', 'desc')
         ->cursorPaginate();
 
